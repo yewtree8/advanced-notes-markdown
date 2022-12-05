@@ -1,18 +1,22 @@
 import { FormEvent, useRef, useState } from 'react';
 import { Button, Col, Form, Row, Stack } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CreateableReactSelect from "react-select/creatable";
 import {Category, NoteData } from '../types/NoteData';
+import { v4 as uuidV4 } from "uuid";
 
 type NoteFormProps = {
     onSubmit: (data: NoteData) => void;
+    onAddCategory:(cat: Category) => void;
+    availableCategories: Category[];
 }
 
-const NoteForm = ({onSubmit} : NoteFormProps)  => {
+const NoteForm = ({onSubmit, onAddCategory, availableCategories} : NoteFormProps)  => {
 
   const refTitle = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const [selectedCats, setSelectedCategories] = useState<Category[]>([]); 
+  const navigate = useNavigate();
 
   const submitSave = (e:FormEvent) => {
     e.preventDefault();
@@ -20,8 +24,10 @@ const NoteForm = ({onSubmit} : NoteFormProps)  => {
     onSubmit({
         title: refTitle.current!.value,
         markdown: contentRef.current!.value,
-        categories: [],
+        categories: selectedCats,
     });
+
+    navigate('...');
   }
 
   return (
@@ -37,10 +43,22 @@ const NoteForm = ({onSubmit} : NoteFormProps)  => {
                 <Col>
                     <Form.Group controlId='categories'>
                         <Form.Label>Categories</Form.Label>
-                        <CreateableReactSelect value={selectedCats.map(cat => {
-                            return {
-                                label: cat.label, value : cat.id,
-                            }})}
+                        <CreateableReactSelect 
+                            onCreateOption={label => {
+                                const newCat = { id: uuidV4(), label }
+                                onAddCategory(newCat);
+                                setSelectedCategories(prev => [...prev, newCat])
+                            }}
+                            options={availableCategories.map(cat => {
+                                return {
+                                    label: cat.label, value: cat.id,
+                                }
+                            })}
+                            value={selectedCats.map(cat => {
+                                return {
+                                    label: cat.label, value : cat.id,
+                                }})}
+
                             onChange={cats =>{
                                 setSelectedCategories(cats.map(cat => {
                                     return { label: cat.label, id: cat.value}

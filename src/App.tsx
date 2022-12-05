@@ -25,11 +25,19 @@ const AdvancedNotes = () => {
       })     
   }
 
+  const addCategory = (cat: Category) => {
+    setCategories(prev => [...prev, cat]);
+  }
+
   return (
     <Container className="my-4">
     <Routes>
       <Route path="/" element = { <h1> Home </h1> }/>
-      <Route path ="/new" element = { <NewNote />} />
+      <Route path ="/new" 
+      element ={<NewNote onSubmit={onCreateNote} 
+      onAddCategory={addCategory}
+      availableCategories={cats}/>}
+      />
       <Route path ="/:id">
         <Route index element = {<h1>Base Note Index ID</h1>} />
         <Route path="edit" element ={<h1>We`re now editing</h1>} />
