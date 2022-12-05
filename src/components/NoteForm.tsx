@@ -27,7 +27,7 @@ const NoteForm = ({onSubmit, onAddCategory, availableCategories} : NoteFormProps
         categories: selectedCats,
     });
 
-    navigate('...');
+    navigate('..');
   }
 
   return (

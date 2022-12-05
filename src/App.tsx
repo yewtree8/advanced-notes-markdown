@@ -4,10 +4,11 @@ import { Container } from "react-bootstrap";
 import {Routes, Route, Navigate} from "react-router-dom";
 import NewNote from "./components/notes/NewNote";
 import { Category, NoteData, RawNote } from "./types/NoteData";
-import { useLocalStorage } from "./useLocalStorage";
+import { useLocalStorage } from "./hook/useLocalStorage";
 import { v4 as uuidV4 } from "uuid";
+import NoteList from "./components/NoteList";
 
-const AdvancedNotes = () => {
+const AdvancedNotesApp = () => {
 
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [cats, setCategories] = useLocalStorage<Category[]>("CATEGORIES", []);
@@ -32,7 +33,7 @@ const AdvancedNotes = () => {
   return (
     <Container className="my-4">
     <Routes>
-      <Route path="/" element = { <h1> Home </h1> }/>
+      <Route path="/" element={<NoteList availableCategories={cats} />}/>
       <Route path ="/new" 
       element ={<NewNote onSubmit={onCreateNote} 
       onAddCategory={addCategory}
@@ -42,11 +43,11 @@ const AdvancedNotes = () => {
         <Route index element = {<h1>Base Note Index ID</h1>} />
         <Route path="edit" element ={<h1>We`re now editing</h1>} />
       </Route>
-      <Route path ="*" element = { <Navigate to="/" />} />
+      <Route path="*" element = { <Navigate to="/" />} />
     </Routes>
     </Container>
   )
   
 }
 
-export default AdvancedNotes;
+export default AdvancedNotesApp;
