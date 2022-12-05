@@ -1,5 +1,6 @@
-import React from 'react'
-import { Col, Form, Row, Stack } from 'react-bootstrap';
+import { Button, Col, Form, Row, Stack } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import CreateableReactSelect from "react-select/creatable";
 
 const NoteForm = () => {
   return (
@@ -15,10 +16,22 @@ const NoteForm = () => {
                 <Col>
                     <Form.Group controlId='Categories'>
                         <Form.Label>Categories</Form.Label>
-                        <Form.Control required />
+                        <CreateableReactSelect isMulti />
                     </Form.Group>
                 </Col>
             </Row>
+
+            <Form.Group controlId='markdown'>
+                <Form.Label>Body</Form.Label>
+                <Form.Control required as='textarea' rows={10} />
+            </Form.Group>
+
+            <Stack direction="horizontal" gap={2} className="justify-content-end">
+                <Button type="submit" variant="primary">Save</Button>
+                <Link to='..'>
+                <Button type="button" variant="outline-secondary">Cancel</Button>
+                </Link>
+            </Stack>
         </Stack>
     </Form>
   )
