@@ -13,3 +13,13 @@ export type Category = {
     label: string;
 }
 
+export type RawNote = {
+    id: string; 
+}
+
+export type RawNoteData = {
+    title: string;
+    markdown: string;
+    catIds: string[];
+}
+

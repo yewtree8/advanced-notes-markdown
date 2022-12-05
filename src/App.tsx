@@ -2,9 +2,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 import {Routes, Route, Navigate} from "react-router-dom";
 import NewNote from "./components/notes/NewNote";
+import { Category, RawNote } from "./types/NoteData";
+import { useLocalStorage } from "./useLocalStorage";
 
 const AdvancedNotes = () => {
-    
+  
+  const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
+  const [cats, setCategories] = useLocalStorage<Category[]>("CATEGORIES", []);
+
   return (
     <Container className="my-4">
     <Routes>
