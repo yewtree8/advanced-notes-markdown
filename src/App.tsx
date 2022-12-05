@@ -8,7 +8,7 @@ const AdvancedNotes = () => {
   return (
     <Container className="my-4">
     <Routes>
-      <Route path="/" element = { <h1> Hi </h1> }/>
+      <Route path="/" element = { <h1> Home </h1> }/>
       <Route path ="/new" element = { <NewNote />} />
       <Route path ="/:id">
         <Route index element = {<h1>Base Note Index ID</h1>} />

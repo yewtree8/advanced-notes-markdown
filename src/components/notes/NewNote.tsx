@@ -4,7 +4,7 @@ const NewNote = () => {
   return (
     <>
     <h2 className="mb-4">New Note</h2>
-    <NoteForm />
+    <NoteForm /> {/**Broken for now, but we move */}
     </>
   )
 }
