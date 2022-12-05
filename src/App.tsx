@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 import {Routes, Route, Navigate} from "react-router-dom";
-import NewNote from "./components/NewNote";
+import NewNote from "./components/notes/NewNote";
 
 const AdvancedNotes = () => {
     
