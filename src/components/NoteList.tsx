@@ -1,20 +1,47 @@
 
-import { useState } from 'react';
-import { Button, Col, Form, Row, Stack } from "react-bootstrap";
+import { useMemo, useState } from 'react';
+import { Button, Card, Col, Form, Row, Stack } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
-import { Category } from '../types/NoteData';
+import { Category} from '../types/NoteData';
 
+type SimpleNote = {
+    cats: Category[];
+    title: string;
+    id: string;
+}
 
 type NoteListProps = {
     availableCategories: Category[];
+    notes: SimpleNote[];
 }
 
-const NoteList = ({availableCategories} : NoteListProps) => {
+const NoteCard = ({id, title, cats} : SimpleNote) => {
+    return (
+        <>
+        <Card id={id}>
+            <Card.Body>
+                <Card.Title>{title}</Card.Title>
+            </Card.Body>
+        </Card>
+        </>
+    )
+}
+
+const NoteList = ({availableCategories, notes} : NoteListProps) => {
 
   const[selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const[title, setTitle] = useState(""); 
  
+  const filteredNotes = useMemo(() => {
+    return notes.filter(note => {
+        return (title === "" || note.title.toLowerCase().includes(title.toLowerCase())) &&
+         (selectedCategories.length === 0 ||
+             selectedCategories.every(cat =>
+            note.cats.some(catTag => catTag.id === cat.id)))
+    })
+  },[title, selectedCategories, notes]);
+
 
   return (
     <>
@@ -65,8 +92,18 @@ const NoteList = ({availableCategories} : NoteListProps) => {
              </Col>
         </Row>
     </Form>
+    <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
+        {filteredNotes.map(note => (
+            <Col key={note.id}>
+                <NoteCard title={note.title} id={note.id} cats={note.cats} />
+            </Col>
+        ))}
+    </Row> 
     </>
 )
+
+
 }
+
 
 export default NoteList;
