@@ -78,7 +78,7 @@ const NoteList = ({availableCategories, notes} : NoteListProps) => {
         <Row className="mt-2 mb-4">
             <Col>
                 <Form.Group controlId="title">
-                    <Form.Label>Title</Form.Label>
+                    <Form.Label>Search by title</Form.Label>
                     <Form.Control 
                     type="text" 
                     value={title}
@@ -87,7 +87,7 @@ const NoteList = ({availableCategories, notes} : NoteListProps) => {
             </Col>
             <Col>
                 <Form.Group controlId="categories">
-                    <Form.Label>Categories</Form.Label>
+                    <Form.Label>Category Filter</Form.Label>
                         <ReactSelect 
                             value={selectedCategories.map(cat => {
                                 return {
@@ -99,8 +99,8 @@ const NoteList = ({availableCategories, notes} : NoteListProps) => {
                                     label: cat.label, value: cat.id,
                                 }
                             })}
-                            onChange={cats =>{
-                                setSelectedCategories(cats.map(cat => {
+                            onChange={cate =>{
+                                setSelectedCategories(cate.map(cat => {
                                     return { label: cat.label, id: cat.value}
                                 }))
                             }}

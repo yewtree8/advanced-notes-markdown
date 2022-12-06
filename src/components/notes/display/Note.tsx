@@ -2,12 +2,14 @@ import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
 import { useNote } from "./NoteLayout";
 import styles from "../../../style/notes/NoteList.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 const Note = () => {
 
     const note = useNote();
 
     return (
+        <>
         <Row className="align-items-center mb-4">
             <Col className="align-items-left mb-1">
             <h1>{note.title}</h1>
@@ -35,6 +37,8 @@ const Note = () => {
             </Stack>
         </Col>
         </Row>
+        <ReactMarkdown>{note.markdown}</ReactMarkdown>
+        </>
  )
 
 }
