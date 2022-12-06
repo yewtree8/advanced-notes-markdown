@@ -1,12 +1,17 @@
 import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
 import { useNote } from "./NoteLayout";
 import styles from "../../../style/notes/NoteList.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
-const Note = () => {
+type NoteViewProps = {
+    onDeleteNote:(id: string) => void;
+}
+
+const Note = ({onDeleteNote} : NoteViewProps) => {
 
     const note = useNote();
+    const navigate = useNavigate();
 
     return (
         <>
@@ -30,7 +35,15 @@ const Note = () => {
                 <Link to={`/${note.id}/edit`}>
                     <Button variant="primary">Edit</Button>
                 </Link>
-                <Button variant="outline-danger">Delete</Button>
+                <Button 
+                variant="outline-danger"
+                onClick={() => {
+                    let check = confirm("Are You Sure?");
+                    if(check) {
+                        onDeleteNote(note.id);
+                        navigate("/");
+                    }
+                }}>Delete</Button>
                 <Link to="..">
                 <Button variant="outline-secondary">Back</Button>
                 </Link>

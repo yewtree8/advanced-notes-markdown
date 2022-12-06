@@ -47,9 +47,20 @@ const App = () => {
   }
 
   /**
+   * Delete a note (from view)
+   * @param id ID of note to delete.
+   */
+  const onDeleteNote = (id: string) => {
+    setNotes(prevNotes => {
+      return prevNotes.filter(note => note.id !== id);
+    })
+  }
+
+  /**
    * We seperated the categories as their own thing inbetween
    * raw data and normal data, so this serves to 
    * Re build a normal set of 'notes' with a category type inside of it.
+   * TODO this could be the reson for the 'pile on' bug.
    */
   const notesForLayout = useMemo(() => {
     return notes.map(note => {
@@ -73,7 +84,7 @@ const App = () => {
       />
       <Route path ="/:id" 
       element={<NoteLayout notes={notesForLayout} />}>
-        <Route index element={<Note />} />
+        <Route index element={<Note onDeleteNote={onDeleteNote} />} />
         <Route path="edit"
          element={<EditNote
                   onSubmit={onUpdateNote} 
