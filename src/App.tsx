@@ -7,8 +7,10 @@ import { Category, NoteData, RawNote } from "./types/NoteData";
 import { useLocalStorage } from "./hook/useLocalStorage";
 import { v4 as uuidV4 } from "uuid";
 import NoteList from "./components/NoteList";
+import NoteLayout from "./components/notes/display/NoteLayout";
+import Note from "./components/notes/display/Note";
 
-const AdvancedNotesApp = () => {
+const App = () => {
 
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [cats, setCategories] = useLocalStorage<Category[]>("CATEGORIES", []);
@@ -18,6 +20,7 @@ const AdvancedNotesApp = () => {
       return { ...note, cats: cats.filter(cat => note.catIds.includes(cat.id))}
     })
   }, [notes, cats]);
+
 
   const onCreateNote = ({ categories, ...data} : NoteData) => {
       setNotes(prevNotes => {
@@ -30,6 +33,23 @@ const AdvancedNotesApp = () => {
     setCategories(prev => [...prev, cat]);
   }
 
+  /**
+   * We seperated the categories as their own thing inbetween
+   * raw data and normal data, so this serves to 
+   * Re build a normal set of 'notes' with a category type inside of it.
+   */
+  const notesForLayout = useMemo(() => {
+    return notes.map(note => {
+      let rebuiltNote = {
+        id: note.id,
+        title: note.title,
+        markdown: note.markdown,
+        categories: cats.filter(cat => note.catIds.includes(cat.id)),
+      }
+      return rebuiltNote;
+    })
+  }, [notes, cats]);
+
   return (
     <Container className="my-4">
     <Routes>
@@ -39,8 +59,9 @@ const AdvancedNotesApp = () => {
       onAddCategory={addCategory}
       availableCategories={cats}/>}
       />
-      <Route path ="/:id">
-        <Route index element = {<h1>Base Note Index ID</h1>} />
+      <Route path ="/:id" 
+      element={<NoteLayout notes={notesForLayout} />}>
+        <Route index element={<Note />} />
         <Route path="edit" element ={<h1>We`re now editing</h1>} />
       </Route>
       <Route path="*" element = { <Navigate to="/" />} />
@@ -50,4 +71,4 @@ const AdvancedNotesApp = () => {
   
 }
 
-export default AdvancedNotesApp;
+export default App;
