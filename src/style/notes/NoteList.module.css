@@ -1,0 +1,14 @@
+/**
+    Overriding bootstrap component modules
+*/
+
+.card {
+    transition: translate ease-in-out 250ms, box-shadow 250ms;
+}
+
+.card:hover,
+.card:focus{
+    translate: 0 -5px;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0, 0.21);
+    transition: translate ease-in-out 250ms, box-shadow 250ms;
+}

@@ -4,6 +4,7 @@ import { Button, Card, Col, Form, Row, Stack } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 import { Category} from '../types/NoteData';
+import styles from "../style/notes/NoteList.module.css";
 
 type SimpleNote = {
     cats: Category[];
@@ -19,7 +20,7 @@ type NoteListProps = {
 const NoteCard = ({id, title, cats} : SimpleNote) => {
     return (
         <>
-        <Card id={id}>
+        <Card as={Link} to={`/${id}`} className={`h-100 text-reset text-decoration-none ${styles.card}`}>
             <Card.Body>
                 <Card.Title>{title}</Card.Title>
             </Card.Body>

@@ -33,9 +33,7 @@ const AdvancedNotesApp = () => {
   return (
     <Container className="my-4">
     <Routes>
-      <Route path="/" element={<NoteList availableCategories={cats} notes={notes.map(raw => {
-        return { id: raw.id, title: raw.title, markdown: raw.markdown, categories: raw.catIds }
-      })} />}/>
+      <Route path="/" element={<NoteList availableCategories={cats} notes={notesWithCategories} />} />
       <Route path ="/new" 
       element ={<NewNote onSubmit={onCreateNote} 
       onAddCategory={addCategory}
