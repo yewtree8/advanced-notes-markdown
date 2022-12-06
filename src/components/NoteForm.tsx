@@ -9,13 +9,14 @@ type NoteFormProps = {
     onSubmit: (data: NoteData) => void;
     onAddCategory:(cat: Category) => void;
     availableCategories: Category[];
-}
 
-const NoteForm = ({onSubmit, onAddCategory, availableCategories} : NoteFormProps)  => {
+} & Partial<NoteData>
+
+const NoteForm = ({onSubmit, onAddCategory, availableCategories, title="", markdown="", categories=[]} : NoteFormProps)  => {
 
   const refTitle = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [selectedCats, setSelectedCategories] = useState<Category[]>([]); 
+  const [selectedCats, setSelectedCategories] = useState<Category[]>(categories); 
   const navigate = useNavigate();
 
   const submitSave = (e:FormEvent) => {
@@ -24,7 +25,7 @@ const NoteForm = ({onSubmit, onAddCategory, availableCategories} : NoteFormProps
     onSubmit({
         title: refTitle.current!.value,
         markdown: contentRef.current!.value,
-        categories: selectedCats,
+        categories: selectedCats || [],
     });
 
     navigate('..');
@@ -37,7 +38,7 @@ const NoteForm = ({onSubmit, onAddCategory, availableCategories} : NoteFormProps
                 <Col>
                     <Form.Group controlId="title">
                     <Form.Label>Title</Form.Label>
-                    <Form.Control ref={refTitle} required />
+                    <Form.Control ref={refTitle} required defaultValue={title} />
                     </Form.Group>
                 </Col>
                 <Col>
@@ -71,7 +72,7 @@ const NoteForm = ({onSubmit, onAddCategory, availableCategories} : NoteFormProps
 
             <Form.Group controlId='markdown'>
                 <Form.Label>Body</Form.Label>
-                <Form.Control required as='textarea'
+                <Form.Control required defaultValue={markdown} as='textarea'
                  ref={contentRef}
                   rows={10} />
             </Form.Group>

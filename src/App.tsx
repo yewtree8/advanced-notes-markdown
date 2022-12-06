@@ -9,6 +9,7 @@ import { v4 as uuidV4 } from "uuid";
 import NoteList from "./components/NoteList";
 import NoteLayout from "./components/notes/display/NoteLayout";
 import Note from "./components/notes/display/Note";
+import EditNote from "./components/notes/EditNote";
 
 const App = () => {
 
@@ -33,6 +34,18 @@ const App = () => {
     setCategories(prev => [...prev, cat]);
   }
 
+  const onUpdateNote = (id: string, {categories, ...data}:NoteData) => {
+    setNotes(prevNotes => {
+      return prevNotes.map(note => {
+        if(note.id === id) {
+            return {...note, ...data, catIds: cats.map(cat => cat.id) }
+        } else {
+          return note;
+        }
+      });
+    })    
+  }
+
   /**
    * We seperated the categories as their own thing inbetween
    * raw data and normal data, so this serves to 
@@ -40,13 +53,12 @@ const App = () => {
    */
   const notesForLayout = useMemo(() => {
     return notes.map(note => {
-      let rebuiltNote = {
+      return {
         id: note.id,
         title: note.title,
         markdown: note.markdown,
         categories: cats.filter(cat => note.catIds.includes(cat.id)),
       }
-      return rebuiltNote;
     })
   }, [notes, cats]);
 
@@ -62,7 +74,11 @@ const App = () => {
       <Route path ="/:id" 
       element={<NoteLayout notes={notesForLayout} />}>
         <Route index element={<Note />} />
-        <Route path="edit" element ={<h1>We`re now editing</h1>} />
+        <Route path="edit"
+         element={<EditNote
+                  onSubmit={onUpdateNote} 
+                  onAddCategory={addCategory} 
+                  availableCategories={cats} />}/>
       </Route>
       <Route path="*" element = { <Navigate to="/" />} />
     </Routes>
