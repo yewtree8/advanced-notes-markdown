@@ -1,6 +1,6 @@
 
 import { useMemo, useState } from 'react';
-import { Button, Card, Col, Form, Row, Stack } from "react-bootstrap";
+import { Button, Card, Col, Form, Row, Stack, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 import { Category} from '../types/NoteData';
@@ -20,9 +20,26 @@ type NoteListProps = {
 const NoteCard = ({id, title, cats} : SimpleNote) => {
     return (
         <>
-        <Card as={Link} to={`/${id}`} className={`h-100 text-reset text-decoration-none ${styles.card}`}>
+        <Card 
+        as={Link} 
+        to={`/${id}`} 
+        className={`h-100 text-reset text-decoration-none ${styles.card}`}
+        >
             <Card.Body>
-                <Card.Title>{title}</Card.Title>
+                <Stack gap={2} className="align-items-center justify-content-center h-100">
+                    <span className="fs-4">{title}</span>
+                    {cats.length > 0 && (
+                        <Stack gap={1} direction="horizontal"
+                        className="justify-content-center flex-wrap">
+                            {cats.map(cat => {
+                                return (
+                                <Badge className={`text-truncate ${styles.badge}`} key={cat.id}>
+                                    {cat.label}
+                                </Badge>)
+                            })}
+                        </Stack>
+                    )} 
+                </Stack>
             </Card.Body>
         </Card>
         </>
